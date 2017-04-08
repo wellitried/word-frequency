@@ -1,0 +1,8 @@
+.min-height {
+    min-height: 500px;
+}
+
+.max-width {
+    width: 600px;
+    display: inline-block;
+}

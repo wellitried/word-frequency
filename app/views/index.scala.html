@@ -1,4 +1,56 @@
-@main("word-frequency") {
-    @upload()
-    @download()
-}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>word frequency</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    </head>
+    <body>
+
+        <div class="w3-top">
+            <div class="w3-bar w3-white w3-wide w3-card-2">
+                <a href="#home" class="w3-bar-item w3-button">word frequency</a>
+            </div>
+        </div>
+
+        <div class="w3-content w3-padding" >
+            <div class="w3-container w3-padding-32">
+                <h3 class="w3-border-bottom w3-border-light-grey w3-padding-8">About</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
+                </p>
+            </div>
+
+            <div class="w3-container w3-padding-8 min-height" id="home" >
+                <h3 class="w3-border-bottom w3-border-light-grey w3-padding-8">Home</h3>
+                @helper.form(action = routes.DictionaryController.uploadText, 'enctype -> "multipart/form-data") {
+                    <div>
+                        <input type="file" name="text">
+                        <br/>
+                        <input type="submit">
+                    </div>
+                }
+                <a class="w3-button" style="background-color: lightgray" href="@routes.DictionaryController.getDictionary()">dictionary</a>
+                @test()
+            </div>
+
+            <footer class="w3-center w3-padding-16">
+                <h3 class="w3-border-bottom w3-border-light-grey w3-padding-8">Feedback?</h3>
+                <form action="/action_page.php" target="_blank" class="max-width">
+                    <input class="w3-input" type="text" placeholder="Name" required name="Name">
+                    <input class="w3-input w3-section" type="text" placeholder="Email" required name="Email">
+                    <input class="w3-input w3-section" type="text" placeholder="Subject" required name="Subject">
+                    <input class="w3-input w3-section" type="text" placeholder="Comment" required name="Comment">
+                    <button class="w3-button w3-black w3-section" type="submit">
+                        <i class="fa fa-paper-plane"></i> SEND MESSAGE
+                    </button>
+                </form>
+            </footer>
+            <div class="w3-container w3-padding-8">
+
+            </div>
+        </div>
+    </body>
+</html>
