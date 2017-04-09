@@ -3,6 +3,8 @@ GET     /                           controllers.HomeController.index
 
 GET     /dictionary                 controllers.DictionaryController.getDictionary
 
+GET        /json/:pageIndex         controllers.DictionaryController.getJson(pageIndex: Integer)
+
 POST    /upload                     controllers.DictionaryController.uploadText
 
 # Map static resources from the /public folder to the /assets URL path
