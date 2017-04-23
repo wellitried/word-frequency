@@ -3,13 +3,16 @@
     <head>
         <title>word frequency</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/temp.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/ng-table@@2.0.2/bundles/ng-table.min.css">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+        <script src="https://unpkg.com/ng-table@@2.0.2/bundles/ng-table.min.js"></script>
         <script src="@routes.Assets.versioned("javascripts/app.js")" type="text/javascript"></script>
     </head>
-    <body ng-app="app" >
+    <body ng-app="app" ng-controller="ctrl">
 
         <div class="w3-top">
             <div class="w3-bar w3-white w3-wide w3-card-2">
@@ -25,24 +28,28 @@
                 </p>
             </div>
 
-            <div class="w3-container w3-padding-8 min-height" id="home" ng-controller="ctrl">
+            <div class="w3-container w3-padding-8 min-height" id="home" >
                 <h3 class="w3-border-bottom w3-border-light-grey w3-padding-8">Home</h3>
                 <form action="@routes.DictionaryController.uploadText" method="POST" enctype="multipart/form-data">
                     <div>
-                        <input type="file" name="text" onchange="javascript:this.form.submit();">
+                        <input class="btn btn-primary" type="file" name="text" onchange="javascript:this.form.submit();">
+                        <br/>
+                        <a class="btn btn-primary" href="@routes.DictionaryController.getDictionary()">dictionary</a>
                     </div>
                 </form>
                 <hr/>
-                <a class="w3-button" style="background-color: lightgray" href="@routes.DictionaryController.getDictionary()">dictionary</a>
-                <br/>
-                {{field}}
-                <table border="1">
-                    <tr ng-repeat="item in json | orderBy">
-                        <td>{{item.freq}}</td>
-                        <td>{{item.word}}</td>
+                <table ng-show="tableIsShown" class="table" show-filter="true" ng-table="tableParams">
+                    <tr ng-repeat="item in actualJson | orderBy">
+                        <td title="'Frequency'" filter="{ freq: 'number'}" sortable="'freq'">
+                            {{item.freq}}</td>
+                        <td title="'Word'" filter="{ word: 'text'}" sortable="'word'">
+                            {{item.word}}</td>
                     </tr>
                 </table>
+
             </div>
+
+
             <footer class="w3-center w3-padding-16">
                 <h3 class="w3-border-bottom w3-border-light-grey w3-padding-8">Feedback? Suggestion?</h3>
                 <form action="/action_page.php" target="_blank" class="max-width">
