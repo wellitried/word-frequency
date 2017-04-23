@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 public class JsonMaker {
-    private static final int PAGE_SIZE = 30;
+    private static final int PAGE_SIZE = 15;
 
     public static JsonNode getJson(int pageIndex, LinkedHashMap<String, Integer> map) {
 

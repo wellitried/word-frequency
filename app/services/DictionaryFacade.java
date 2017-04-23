@@ -1,6 +1,7 @@
 package services;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,23 @@ public class DictionaryFacade {
 
     public JsonNode getPartialDictionaryJson(int pageIndex) {
         return JsonMaker.getJson(pageIndex, (LinkedHashMap<String, Integer>) dictionaryMap);
+    }
+
+    public JsonNode getFullData() { //TODO
+        JsonNode data = JsonNodeFactory.instance.arrayNode();
+        /*
+        put to data json full dictionary map and excel
+        {
+            excelDictionary = [byteArray],
+            dictionaryLength = long,
+            dictionaryMap = {
+                        'the' : 1,
+                        'word' : 2,
+                        ...
+                        }
+         }
+         */
+        return data;
     }
 
 }
