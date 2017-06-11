@@ -1,16 +1,49 @@
-var app = angular.module('app', ["ngTable"]);
-app.controller('ctrl', function ($scope, $http, NgTableParams) {
+(function () {
+    "use strict";
+    var app = angular.module('app', ['angularUtils.directives.dirPagination']);
 
-    $scope.actualJson = getJson(0);
-    $scope.tableIsShown = function () {
-        return $scope.actualJson ? true : false;
-    };
+    app.directive('uploadDirective', function (httpPostFactory) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attr) {
+                element.bind('change', function () {
+                    var formData = new FormData();
+                    formData.append('file', element[0].files[0]);
+                    httpPostFactory(formData, function (response) {
+                        console.log(response);
+                        scope.serverData = response;
+                        scope.$apply();
+                    });
+                });
+            }
+        };
+    });
 
-    $scope.tableParams = new NgTableParams({}, {dataset: $scope.actualJson});
+    app.factory('httpPostFactory', function ($http, $timeout) {
+        return function (formData, callback) {
+            $http({
+                url: '/upload',
+                method: "POST",
+                data: formData,
+                headers: {'Content-Type': undefined}
+            }).then(function (response) {
+                $timeout(function () {
+                    callback(response.data);
+                });
+            });
+        };
+    });
 
-    function getJson(index) {
-        $http.get('/json/' + index).success(function (data) {
-            $scope.actualJson = data;
-        });
-    }
-});
+    app.controller('tableController', function ($scope) {
+
+        $scope.wordsPerPage = 15;
+        $scope.pagination = {
+            current: 1
+        };
+        //$scope.currentPageWords - массив объектов для данной страницы
+
+
+    });
+}());
+

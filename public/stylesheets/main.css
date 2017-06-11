@@ -2,7 +2,24 @@
     min-height: 500px;
 }
 
-.max-width {
-    width: 600px;
-    display: inline-block;
+.book-title {
+    width: 100%;
+    margin: 10px;
+}
+
+.table-holder {
+    text-align: center;
+    margin: 20px;
+}
+
+.bg-success {
+    height: 100px;
+}
+
+.btn-color {
+    background-color: #dff0d8;
+}
+
+.words-table {
+    margin: 10px;
 }

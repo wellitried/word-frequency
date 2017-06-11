@@ -37,4 +37,10 @@ public class JsonMaker {
 
         return rootJson;
     }
+
+    public static JsonNode getJsonData() {
+        ArrayNode rootJson = JsonNodeFactory.instance.arrayNode();
+
+        return rootJson;
+    }
 }

@@ -22,18 +22,19 @@ public class DictionaryController extends Controller {
 
     public Result uploadText() {
         try {
+            System.out.println("********************" + request().body().asMultipartFormData().getFile("file").getFilename());
             Http.MultipartFormData.FilePart requestFilePart = request().body().asMultipartFormData().getFile("text");
             File uploaded = new File("/tmp/uploaded"); //TODO /tmp/uploaded + some id
-            Files.copy(((File) requestFilePart.getFile()).toPath(), uploaded.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            //Files.copy(((File) requestFilePart.getFile()).toPath(), uploaded.toPath(), StandardCopyOption.REPLACE_EXISTING);
             dictionaryFacade.setFileHandler(uploaded);
-            return redirect(routes.HomeController.index());
+            return ok("{\"json\" : \"example\"}");
         } catch (Exception e) {
             e.printStackTrace();
             return badRequest("Error :(");
         }
     }
 
-    public Result getDictionary() {
+    public Result getExcelDictionary() {
         InputStream dictionary = dictionaryFacade.getExcelDictionary();
         if (dictionary == null) {
             return badRequest("Error :(");
@@ -42,7 +43,8 @@ public class DictionaryController extends Controller {
         return ok(dictionary);
     }
 
-    public Result getJson(int pageIndex) {
+    public Result getJsonPage(int pageIndex) {
         return ok(dictionaryFacade.getPartialDictionaryJson(pageIndex));
     }
+
 }

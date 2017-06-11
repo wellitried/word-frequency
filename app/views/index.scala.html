@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>word frequency</title>
+        <title>Word Frequency</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -12,17 +12,16 @@
 
     </head>
     <body ng-app="app" >
-        <div class="container-fluid">
+        <div class="container" ng-controller="tableController">
 
-            <div class="row">
-                <div class="col-lg-4">
-                    <a href=""><h3 class="text-muted">word frequency</h3></a>
+            <div class="row bg-success">
+                <div class="col-lg-12">
+                    <h3 class="text-muted text-center">word frequency</h3>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-lg-12">
-                    <h3>About</h3>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4 class="text-muted">About</h4>
                     <p>
         What is it? How can it help? What is a purpose? Who could be interested in it?
                     </p>
@@ -30,27 +29,25 @@
             </div>
 
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3>Home</h3>
-                    <p>Select a <mark>.txt</mark> file in English</p>
-                    <form action="@routes.DictionaryController.uploadText" method="POST" enctype="multipart/form-data">
-                        <div>
-                            <input class="btn btn-primary" type="file" name="text" onchange="javascript:this.form.submit();">
-                            <br/>
-                        </div>
-                    </form>
+            <div class="row" ng-show="!serverData">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4 class="text-muted">Select a <mark>.txt</mark> file in English</h4>
+                    <div>
+                        <input class="btn btn-color" data-upload-Directive type="file" name="file"/>
+                    </div>
                 </div>
             </div>
 
 
-            <div class="row" ng-controller="tableController" ng-show="currentPageWords">
-                <div class="col-lg-6">
-                    <a class="btn btn-success" href="@routes.DictionaryController.getExcelDictionary()">excel</a>
+            <div class="row table-holder" ng-show="serverData">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <a class="btn btn-color" href="@routes.DictionaryController.getExcelDictionary()">Export to excel</a>
+                    <a class="btn btn-color" href="">Upload new file</a>
+                    <label class="book-title">Book long title example</label>
                     <br/>
-                    <table class="table">
-                        <tr dir-paginate="item in currentPageWords | itemsPerPage: wordsPerPage" total-items="totalWords" current-page="pagination.current">
-                            <td>{{$index * pagination.current + 1}}</td>
+                    <table class="table words-table">
+                        <tr dir-paginate="item in currentPageWords | itemsPerPage: wordsPerPage" current-page="pagination.current">
+                            <td>{{$index + 1 + (pagination.current - 1) * wordsPerPage}}</td>
                             <td>{{ item.freq }}</td>
                             <td>{{ item.word }}</td>
                         </tr>
@@ -60,8 +57,8 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-12">
-                    <h3>Feedback? Suggestion?</h3>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h4 class="text-muted">Feedback? Suggestion?</h4>
                 </div>
             </div>
         </div>
