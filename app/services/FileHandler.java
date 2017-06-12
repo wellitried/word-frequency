@@ -7,13 +7,7 @@ import java.nio.charset.Charset;
 
 class FileHandler {
 
-    private File text;
-
-    public void setFile(File file) {
-        this.text = file;
-    }
-
-    Reader getReaderFromFile() throws IOException {
+    Reader getReaderFromFile(File text) throws IOException {
         //text = getFile();
         if (text == null)
             throw new IllegalStateException("FileHandler wasn't set.");

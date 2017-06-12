@@ -2,7 +2,6 @@ package services;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ class WordsCounter {
     private static final int ASCII_DEC_Z = 90;
 
     Map<String, Integer> getDictionary(Reader reader) throws IOException {
-        Date check = new Date();
+
         Map<String, Integer> dictionary = new HashMap<>();
         StringBuilder word = new StringBuilder();
         int c;
@@ -28,7 +27,6 @@ class WordsCounter {
             }
         }
         dictionary = sortMap(dictionary);
-        System.out.println("Performance check: " + (new Date().getTime() - check.getTime()) + " ms;");
 
         return dictionary;
     }

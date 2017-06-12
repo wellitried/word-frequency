@@ -4,7 +4,7 @@
         <title>Word Frequency</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
         <script src="@routes.Assets.versioned("bower_components/angularUtils-pagination/dirPagination.js")" type="text/javascript"></script>
@@ -28,8 +28,7 @@
                 </div>
             </div>
 
-
-            <div class="row" ng-show="!serverData">
+            <div class="row" ng-show="!serverData.dictionary">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h4 class="text-muted">Select a <mark>.txt</mark> file in English</h4>
                     <div>
@@ -37,25 +36,26 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="row table-holder" ng-show="serverData">
+
+            <div class="row table-holder" ng-show="serverData.dictionary">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <a class="btn btn-color" href="@routes.DictionaryController.getExcelDictionary()">Export to excel</a>
+                    <a class="btn btn-color" target="_self" download="result.xls" href="">Export to excel</a>
                     <a class="btn btn-color" href="">Upload new file</a>
-                    <label class="book-title">Book long title example</label>
-                    <br/>
-                    <table class="table words-table">
-                        <tr dir-paginate="item in currentPageWords | itemsPerPage: wordsPerPage" current-page="pagination.current">
-                            <td>{{$index + 1 + (pagination.current - 1) * wordsPerPage}}</td>
-                            <td>{{ item.freq }}</td>
-                            <td>{{ item.word }}</td>
-                        </tr>
-                    </table>
-                    <dir-pagination-controls on-page-change="pageChanged(newPageNumber-1)"></dir-pagination-controls>
+                    <label class="book-title">{{serverData.fileName}}</label>
+                    <div class="table-wrapper">
+                        <table class="table words-table">
+                            <tr dir-paginate="item in currentPageWords | itemsPerPage: wordsPerPage" total-items="totalWords" current-page="pagination.current">
+                                <td class="index">{{$index + 1 + (pagination.current - 1) * wordsPerPage}}</td>
+                                <td class="word">{{ item.word }}</td>
+                                <td class="freq">{{ item.freq }}</td>
+                            </tr>
+                        </table>
+                        <dir-pagination-controls on-page-change="changePage(newPageNumber-1)"></dir-pagination-controls>
+                    </div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="serverData.dictionary">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h4 class="text-muted">Feedback? Suggestion?</h4>
                 </div>

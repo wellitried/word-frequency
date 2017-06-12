@@ -1,11 +1,8 @@
 
-GET         /                       controllers.HomeController.index
+GET         /                    controllers.HomeController.index
 
-GET         /dictionary             controllers.DictionaryController.getExcelDictionary
+GET         /toExcel             controllers.DictionaryController.getExcelDictionary
 
-GET         /json/:pageIndex        controllers.DictionaryController.getJsonPage(pageIndex: Integer)
+POST        /processBook         controllers.DictionaryController.getJsonFromBook
 
-POST        /upload                 controllers.DictionaryController.uploadText
-
-# Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

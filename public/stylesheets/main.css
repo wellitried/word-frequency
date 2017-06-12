@@ -7,19 +7,35 @@
     margin: 10px;
 }
 
+.btn-color {
+    background-color: #dff0d8;
+}
+
 .table-holder {
     text-align: center;
     margin: 20px;
 }
 
-.bg-success {
-    height: 100px;
-}
-
-.btn-color {
-    background-color: #dff0d8;
+.table-wrapper {
+    width: 60%;
+    margin-left: 20%;
 }
 
 .words-table {
     margin: 10px;
+}
+
+.index {
+    width: 10%;
+}
+
+.freq {
+    width: 25%;
+    text-align: left;
+}
+
+.word {
+    width: 65%;
+    font-weight: bold;
+    text-align: right;
 }
