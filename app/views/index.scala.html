@@ -39,8 +39,8 @@
 
             <div class="row table-holder" ng-show="serverData.dictionary">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <a class="btn btn-color" target="_self" download="result.xls" href="">Export to excel</a>
-                    <a class="btn btn-color" href="">Upload new file</a>
+                    <a class="btn btn-color" @*target="_self" download="result.xls"*@ ng-click="getExcel()">Export to excel</a>
+                    <a class="btn btn-color" ng-click="reloadPage()">Upload new file</a>
                     <label class="book-title">{{serverData.fileName}}</label>
                     <div class="table-wrapper">
                         <table class="table words-table">

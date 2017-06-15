@@ -1,8 +1,8 @@
 
 GET         /                    controllers.HomeController.index
 
-GET         /toExcel             controllers.DictionaryController.getExcelDictionary
-
 POST        /processBook         controllers.DictionaryController.getJsonFromBook
+
+POST        /toExcel             controllers.DictionaryController.getExcelDictionary
 
 GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

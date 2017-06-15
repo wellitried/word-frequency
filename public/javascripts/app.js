@@ -14,7 +14,7 @@
                 element.bind('change', function () {
                     var formData = new FormData();
                     formData.append('file', element[0].files[0]);
-                    httpPostFactory(formData, function (response) {
+                    httpPostFactory('/processBook', formData, function (response) {
                         scope.serverData = response;
                         scope.$apply();
                     });
@@ -24,11 +24,11 @@
     });
 
     app.factory('httpPostFactory', function ($http, $timeout) {
-        return function (formData, callback) {
+        return function (url, data, callback) {
             $http({
-                url: '/processBook',
+                url: url,
                 method: "POST",
-                data: formData,
+                data: data,
                 headers: {'Content-Type': undefined}
             }).then(function (response) {
                 $timeout(function () {
@@ -38,7 +38,7 @@
         };
     });
 
-    app.controller('tableController', function ($scope) {
+    app.controller('tableController', function ($scope, httpPostFactory) {
         $scope.serverData = [];
         $scope.wordsPerPage = 15;
         $scope.pagination = {current: 1};
@@ -62,6 +62,16 @@
             $scope.currentPageWords = $scope.serverData.dictionary.slice(
                 pageNumber * $scope.wordsPerPage,
                 pageNumber * $scope.wordsPerPage + $scope.wordsPerPage);
+        };
+
+        $scope.reloadPage = function () {
+            window.location.reload();
+        };
+
+        $scope.getExcel = function () {
+            httpPostFactory('/toExcel', $scope.serverData.dictionary, function (response) {
+                console.log(response);
+            });
         }
 
     });

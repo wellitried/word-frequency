@@ -44,6 +44,7 @@ public class DictionaryController extends Controller {
     }
 
     public Result getExcelDictionary() {
+        System.out.println(request().body().asText());
         InputStream dictionary = dictionaryMaker.getExcelDictionary(null/*jsonNodeFromRequest*/);
 
         response().setHeader("Content-Disposition", "attachment; filename=result.xls");
