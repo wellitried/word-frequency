@@ -30,14 +30,7 @@ public class DictionaryController extends Controller {
         try {
             String filename = request().body().asMultipartFormData().getFile("file").getFilename();
             File requestFile = (File) request().body().asMultipartFormData().getFile("file").getFile();
-
-            File uploaded = new File("/tmp/uploaded/" + filename + " " + new Date().toString());
-            uploaded.getParentFile().mkdirs();
-            uploaded.createNewFile();
-
-            Files.copy(requestFile.toPath(), uploaded.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-            JsonNode result = dictionaryMaker.getDictionaryJson(uploaded, filename);
+            JsonNode result = dictionaryMaker.getDictionaryJson(requestFile, filename);
 
             return ok(result);
         } catch (Exception e) {
