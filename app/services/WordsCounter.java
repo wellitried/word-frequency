@@ -3,7 +3,6 @@ package services;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 class WordsCounter {
@@ -12,6 +11,7 @@ class WordsCounter {
     private static final int ASCII_DEC_z = 122;
     private static final int ASCII_DEC_A = 65;
     private static final int ASCII_DEC_Z = 90;
+    private JsonUtil jsonUtil = new JsonUtil();
 
     Map<String, Integer> getDictionary(Reader reader) throws IOException {
 
@@ -26,17 +26,9 @@ class WordsCounter {
                 word.append((char) (isUppercaseLetter(c) ? c += 32 : c)); //c += 32; to lowercase
             }
         }
-        dictionary = sortMap(dictionary);
+        dictionary = jsonUtil.sortMap(dictionary);
 
         return dictionary;
-    }
-
-    private Map<String, Integer> sortMap(Map<String, Integer> unsortedMap) {
-        Map<String, Integer> sortedMap = new LinkedHashMap<>();
-        unsortedMap.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-        return sortedMap;
     }
 
     private boolean isLetter(int c) {

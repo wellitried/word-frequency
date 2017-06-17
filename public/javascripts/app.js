@@ -3,7 +3,7 @@
     var app = angular.module('app', ['angularUtils.directives.dirPagination']);
 
     app.config(['$compileProvider', function ($compileProvider) {
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(|blob|):/);
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob|):/);
     }]);
 
     app.directive('uploadDirective', function (httpPostFactory) {
@@ -14,7 +14,7 @@
                 element.bind('change', function () {
                     var formData = new FormData();
                     formData.append('file', element[0].files[0]);
-                    httpPostFactory('/processBook', formData, function (response) {
+                    httpPostFactory('/processBook', formData, undefined, undefined, function (response) {
                         scope.serverData = response;
                         scope.$apply();
                     });
@@ -24,12 +24,13 @@
     });
 
     app.factory('httpPostFactory', function ($http, $timeout) {
-        return function (url, data, callback) {
+        return function (url, data, contentType, responseType, callback) {
             $http({
                 url: url,
                 method: "POST",
                 data: data,
-                headers: {'Content-Type': undefined}
+                headers: {'Content-Type': contentType},
+                responseType: responseType
             }).then(function (response) {
                 $timeout(function () {
                     callback(response.data);
@@ -38,7 +39,7 @@
         };
     });
 
-    app.controller('tableController', function ($scope, httpPostFactory) {
+    app.controller('tableController', function ($scope, httpPostFactory, $http) {
         $scope.serverData = [];
         $scope.wordsPerPage = 15;
         $scope.pagination = {current: 1};
@@ -69,8 +70,13 @@
         };
 
         $scope.getExcel = function () {
-            httpPostFactory('/toExcel', $scope.serverData.dictionary, function (response) {
-                console.log(response);
+            httpPostFactory('/toExcel', $scope.serverData.dictionary, 'text/json', 'arraybuffer', function (response) {
+                $scope.serverData.excel = response;
+                var blob = new Blob(
+                    [$scope.serverData.excel],
+                    {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                var objectUrl = (window.URL || window.webkitURL).createObjectURL(blob);
+                window.open(objectUrl);
             });
         }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.DictionaryMaker;
+import views.html.index;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -21,6 +22,9 @@ public class DictionaryController extends Controller {
         this.dictionaryMaker = dictionaryMaker;
     }
 
+    public Result index() {
+        return ok(index.render());
+    }
 
     public Result getJsonFromBook() {
         try {
@@ -44,10 +48,8 @@ public class DictionaryController extends Controller {
     }
 
     public Result getExcelDictionary() {
-        System.out.println(request().body().asText());
-        InputStream dictionary = dictionaryMaker.getExcelDictionary(null/*jsonNodeFromRequest*/);
+        InputStream dictionary = dictionaryMaker.getExcelDictionary(request().body().asJson());
 
-        response().setHeader("Content-Disposition", "attachment; filename=result.xls");
         return ok(dictionary);
     }
 
