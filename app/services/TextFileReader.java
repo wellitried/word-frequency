@@ -5,19 +5,22 @@ import org.mozilla.universalchardet.UniversalDetector;
 import java.io.*;
 import java.nio.charset.Charset;
 
-class FileHandler {
+class TextFileReader {
 
     Reader getReaderFromFile(File text) throws IOException {
-        //text = getFile();
+
         if (text == null)
-            throw new IllegalStateException("FileHandler wasn't set.");
+            throw new IllegalStateException();
 
+        InputStreamReader inputStreamReader;
         String encoding = figureOutEncoding(text);
+        if (encoding == null) {
+            inputStreamReader = new InputStreamReader(new FileInputStream(text));
+        } else {
+            inputStreamReader = new InputStreamReader(new FileInputStream(text), Charset.forName(encoding));
+        }
 
-        return new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(text),
-                        Charset.forName(encoding)));
+        return new BufferedReader(inputStreamReader);
     }
 
     private String figureOutEncoding(File file) throws IOException {
@@ -32,9 +35,6 @@ class FileHandler {
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
         detector.reset();
-
-        if (encoding == null)
-            throw new IOException("Something wrong with encoding.");
 
         return encoding;
     }

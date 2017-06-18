@@ -4,22 +4,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.DictionaryMaker;
+import services.ExcelMaker;
 import views.html.index;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.Date;
 
 public class DictionaryController extends Controller {
 
     private final DictionaryMaker dictionaryMaker;
+    private final ExcelMaker excelMaker;
 
     @Inject
-    public DictionaryController(DictionaryMaker dictionaryMaker) {
+    public DictionaryController(DictionaryMaker dictionaryMaker, ExcelMaker excelMaker) {
         this.dictionaryMaker = dictionaryMaker;
+        this.excelMaker = excelMaker;
     }
 
     public Result index() {
@@ -41,9 +41,16 @@ public class DictionaryController extends Controller {
     }
 
     public Result getExcelDictionary() {
-        InputStream dictionary = dictionaryMaker.getExcelDictionary(request().body().asJson());
+        try {
+            JsonNode dictionaryJson = request().body().asJson();
+            InputStream excelStream = excelMaker.getExcelStream(dictionaryJson);
 
-        return ok(dictionary);
+            return ok(excelStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return badRequest("Error during processing file.");
+        }
     }
 
 }

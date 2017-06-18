@@ -6,6 +6,22 @@
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob|):/);
     }]);
 
+    app.factory('httpPostFactory', function ($http, $timeout) {
+        return function (url, data, contentType, responseType, callback) {
+            $http({
+                url: url,
+                method: "POST",
+                data: data,
+                headers: {'Content-Type': contentType},
+                responseType: responseType
+            }).then(function (response) {
+                $timeout(function () {
+                    callback(response.data);
+                });
+            });
+        };
+    });
+
     app.directive('uploadDirective', function (httpPostFactory) {
         return {
             restrict: 'A',
@@ -20,22 +36,6 @@
                     });
                 });
             }
-        };
-    });
-
-    app.factory('httpPostFactory', function ($http, $timeout) {
-        return function (url, data, contentType, responseType, callback) {
-            $http({
-                url: url,
-                method: "POST",
-                data: data,
-                headers: {'Content-Type': contentType},
-                responseType: responseType
-            }).then(function (response) {
-                $timeout(function () {
-                    callback(response.data);
-                });
-            });
         };
     });
 

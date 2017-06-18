@@ -1,24 +1,23 @@
 package services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 
-class ExcelMaker {
+public class ExcelMaker {
 
-    InputStream getExcelStream(Map<String, Integer> map) {
+    public InputStream getExcelStream(JsonNode jsonDictionary) throws Exception {
+        JsonUtil jsonUtil = new JsonUtil();
+        Map<String, Integer> map = jsonUtil.jsonToMap(jsonDictionary);
+
         HSSFWorkbook workbook = makeExcel(map);
         InputStream dictionary = new ByteArrayInputStream(workbook.getBytes());
-        try {
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        workbook.close();
 
         return dictionary;
     }
